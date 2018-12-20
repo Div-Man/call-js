@@ -1,0 +1,245 @@
+<input type="radio" name="toggler">
+<select>
+  <option value="1">1</option>
+  <option value="2">2</option>
+</select>
+
+<input type="radio" name="toggler">
+<select>
+  <option value="1">1</option>
+  <option value="2">2</option>
+</select>
+
+<script>
+/*
+
+Это не так. [].slice возвращает объект функции. Функциональный объект 
+имеет функцию call(), которая вызывает функцию, назначающую первый 
+параметр от call() до this; другими словами, заставляя функцию думать, 
+что она вызывается из параметра (NodeList, возвращаемого document.querySelectorAll('a')), а не из массива.
+**/
+
+	
+	const sel = [].slice.call(document.querySelectorAll('select'));
+	const sel2 = document.querySelectorAll('select');
+
+console.log(sel);
+console.log(sel2);
+
+[].forEach.call(document.querySelectorAll('[type=radio]'), (el) => {
+    el.addEventListener('change', function() {
+        let curSel = this.nextElementSibling;
+        curSel.disabled = false;
+        sel.filter(s => s !== curSel)[0].disabled = true;
+    });
+});
+
+</script>
+
+<script>
+	/*
+		В javascript методы объекта могут быть привязаны к другому объекту во 
+		время выполнения. Короче говоря, javascript позволяет 
+		объекту "заимствовать" метод другого объекта:
+		
+		
+		
+		
+		Он извлекает функцию slice из Array. Затем он вызывает эту 
+		функцию, но использует результат document.querySelectorAll 
+		как объект this вместо фактического массива.
+	*/
+	
+	object1 = {
+    name:'frank',
+    greet:function(){
+        alert('hello '+this.name)
+    }
+};
+
+object2 = {
+    name:'andy'
+};
+
+// Note that object2 has no greet method.
+// But we may "borrow" from object1:
+
+
+object1.greet.call(object2);
+
+</script>
+
+
+
+
+
+
+[].slice.call(document.querySelectorAll('.slide'));
+
+1. The querySelectorAll() method returns all elements in the document that matches a specified selector(s). 
+
+2. The call() method calls a function with a given this value and arguments provided individually.
+
+3. The slice() method returns the selected elements in an array, as a new array object.
+
+  so this line return the array of [object HTMLDivElement]. Here is the six div with classname "slide" so array length will be 6.
+
+<div class="slideshow">
+
+  <div class="slide">
+    first slider1
+  </div>
+  <div class="slide">
+    first slider2
+  </div>
+  <div class="slide">
+    first slider3
+  </div>
+  <div class="slide">
+    first slider4
+  </div>
+  <div class="slide">
+    first slider5
+  </div>
+  <div class="slide">
+    first slider6
+  </div>
+
+</div>
+
+<script type="text/javascript">
+
+  var arraylist = [].slice.call(document.querySelectorAll('.slide'));
+
+  console.log(arraylist);
+  
+  //Из ES6: просто создайте массив с Array.from(element.children) или Array.from({length: 5})
+
+  
+  
+  
+  /*
+  Для того, чтобы из аргументов JavaScript функции "отрезать" первые Х значений, используется метод slice:
+
+Array.prototype.slice.call(arguments, X);
+
+Например такая функция вернет "3,4":
+*/
+
+(function(){
+  var args = Array.prototype.slice.call(arguments, 2);
+  alert(args); // Returns: 3,4
+})(1, 2, 3, 4);
+
+//ещё http://stackoverflow.com/questions/7056925/how-does-array-prototype-slice-call-work
+
+//http://www.cyberforum.ru/javascript/thread170960.html
+
+//http://qaru.site/questions/17592/how-does-arrayprototypeslicecall-work
+
+//https://stackoverflow.com/questions/222841/most-efficient-way-to-convert-an-htmlcollection-to-an-array
+</script>
+
+
+<div style="color: red;" class="a">1</div>
+<div class="a">2</div>
+<div class="a">3</div>
+<div class="a">4</div>
+
+<script>
+	var a = document.querySelectorAll('.a');
+	
+	a.forEach(function(item, i, arr){
+	item.removeAttribute('style');
+	  console.log(item);
+	});
+</script>
+
+
+
+<style>
+	.tab-menu{
+  width: 300px;
+  outline: 1px solid;
+}
+span{
+  width: 49%;
+  display: inline-block;
+  vertical-align: top;
+  background: green;
+}
+
+span:hover{
+  cursor: pointer;
+}
+</style>
+
+
+
+
+<div class="tab-menu">
+  <span class="tab">Tab 1</span>
+  <span class="tab">Tab 2</span>
+
+  <div class="content">
+    <div class="post">
+       <p>
+         dfsd sns ksnkn snskn sf a f sfs sfs dfsd sns ksnkn snskn sf a f            sfs ss dfsd sns ksnkn snskn sf a f sfs sfs dfsd sns ksnkn snskn            sf a f  sfs sfs
+       </p>
+    </div>
+    <div class="post">
+       <p>
+        Tab 2 Tab 2 Tab 2 Tab 2 Tab 2 Tab 2 Tab 2 Tab 2
+        Tab 2 Tab 2 Tab 2 Tab 2 Tab 2 Tab 2 Tab 2 Tab 2
+        Tab 2 Tab 2 Tab 2 Tab 2 Tab 2 Tab 2 Tab 2 Tab 2
+        Tab 2 Tab 2 Tab 2 Tab 2 Tab 2 Tab 2 Tab 2 Tab 2
+      </p>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+<script>
+ var tab = document.querySelectorAll(".tab"),
+        content = document.querySelector(".content"),
+        post = document.querySelectorAll(".post");
+
+    tab[0].style.backgroundColor='red';
+
+    for (var i = 0; i < content.children.length; i++) { //ищем детей у content
+     	content.children[0].style.display='block'; // первый показать 
+	content.children[i].style.display='none'; // остальные скрыть
+    }
+
+    for (var i = 0; i < tab.length; i++) {
+
+      (function(index) {
+        tab[i].addEventListener('click', function () { //кликнуть по любому табу
+
+            var isActive = (tab[index].getAttribute('style') == 'background-color: red;') ? true : false,
+                isHidden = (post[index].getAttribute('style') == 'display: none;') ? true : false;
+
+            if (!isActive) {
+              [].forEach.call(tab, function(el) {
+                el.removeAttribute('style');
+              });
+              tab[index].style.backgroundColor='red';
+            }
+
+            if (isHidden) {
+              [].forEach.call(content.children, function(el) {
+                el.style.display='none';
+              });
+              post[index].style.display='block';
+            }
+
+        });
+      })(i);
+
+    }
+</script>
